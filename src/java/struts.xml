@@ -1,0 +1,334 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Configuration for the default package. -->
+    <package name="default" extends="struts-default">
+        
+        
+        <interceptors>
+            <interceptor name="authenticationInterceptor" class="Interceptor.AuthenticationInterceptor">
+            </interceptor>
+            <interceptor-stack name="loginStack">
+                <interceptor-ref name="authenticationInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+
+
+        
+        <global-results>
+            <result name="noSession">404.jsp</result>
+        </global-results>
+                
+        <action name="showInfoAdmin" class="controller.UserAction" method="showInfoUserSession">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">AdminInfo.jsp</result>
+            <result name = "fail">login.jsp</result>
+        </action>
+
+
+                
+        <!--======================LOGIN ACTION===============================-->
+        <action name = "loginSession" class = "controller.LoginAction" method="login">
+         <!--   <interceptor-ref name="loginStack"></interceptor-ref>  -->
+            <result name = "successAdmin">index.jsp</result>
+            <result name = "successUser">indexUser.jsp</result>
+           <result name = "fail">login.jsp</result>  
+         <!--    <result name = "notSession">login.jsp</result>   -->
+        </action>
+        
+        
+        
+        <!--======================LOGOUT ACTION===============================-->
+        <action name = "logout" class = "controller.LoginAction" method="logout">
+            <result name = "success">login.jsp</result>
+        </action>
+        
+        
+        
+        
+        <!--======================ADMIN ACTION===============================-->
+        <!-- Show admin information
+        <action name="showInfoAdmin" class="controller.UserAction" method="showInfoUserSession">
+            <result name = "success">AdminInfo.jsp</result>
+            <result name = "fail">fail.jsp</result>
+        </action>  -->
+        
+        <!--Do Update Admin Info-->
+        <action name = "updateAdminAction" class="controller.UserAction" method="doUpdateUserInfo">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success" type="redirectAction">
+                <param name="actionName">showInfoAdmin</param>
+            </result>
+            <result name="fail">fail.jsp</result>
+        </action>
+        
+        <!--Change password admin-->
+        <action name="AdminChangePassword" class="controller.UserAction" method="ChangePassword">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showInfoAdmin</param>
+            </result>
+            <result name ="fail" >fail.jsp</result>
+        </action>
+        
+        
+        
+        <!--======================USER ACTION================================-->
+        
+        <!--Show List User-->
+        <action name = "showListUser" class = "controller.UserAction" method = "showListUser">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">UserList.jsp</result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        
+        <!--Add New User--> 
+        <action name ="doAddUser" class="controller.UserAction" method ="addUser">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showListUser</param>
+            </result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        
+        <!--Do Update User Info-->
+        <action name = "updateUserAction" class="controller.UserAction" method="doUpdateUserInfo">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success" type="redirectAction">
+                <param name="actionName">showListUser</param>
+            </result>
+            <result name="fail">fail.jsp</result>
+        </action>
+        
+        <!--Do Update User Info 2-user-->
+        <action name = "updateUserAction2" class="controller.UserAction" method="doUpdateUserInfo">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success" type="redirectAction">
+                <param name="actionName">showInfoUser</param>
+            </result>
+            <result name="fail">fail.jsp</result>
+        </action>
+        
+        <!---Deactive User --> 
+        <action name="deactiveUserAction" class="controller.UserAction" method="deactiveUser">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showListUser</param>
+            </result>
+            <result name ="fail" >fail.jsp</result>
+        </action>
+        
+        <!---Active User --> 
+        <action name="activeUserAction" class="controller.UserAction" method="activeUser">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showListUser</param>
+            </result>
+            <result name ="fail" >fail.jsp</result>
+        </action>
+        
+        <!--Change Password User-->
+        <action name="UserChangePassword" class="controller.UserAction" method="ChangePassword">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showInfoUser</param>
+            </result>
+            <result name ="fail" >fail.jsp</result>
+        </action>
+        
+        <!-- Show User Information-->
+        <action name="showInfoUser" class="controller.UserAction" method="showInfoUserSession">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">UserInfo.jsp</result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        
+        <!-- Search List User By Admin-->
+        <action name="searchUser" class="controller.UserAction" method="searchUser">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">UserList.jsp</result>
+            <result name = "fail">UserList.jsp</result>
+        </action>
+        
+        
+        
+        <!--==========================BOOK===================================-->
+        
+        <!--Show List Book-->     
+        <action name = "showListBook" class = "controller.BookAction" method="showListBook">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">BookList.jsp</result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        
+        <!--Show All List Book-->     
+        <action name = "showAllListBook" class = "controller.BookAction" method="showAllListBook">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">BookList.jsp</result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        
+        <!--Show List Book by User-->     
+        <action name = "showListBookByUser" class = "controller.BookAction" method="showListBook">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">BookListUser.jsp</result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        <!--Update Book Information--> 
+        <action name="updateBookAction" class="controller.BookAction" method="doUpdateBookInfo">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showAllListBook</param>
+            </result>
+            <result name ="fail" >fail.jsp</result>
+        </action>
+        
+        <!--Add New Book--> 
+        <action name = "addBook" class = "controller.BookAction" method="addBook">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showListBook</param>
+            </result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        
+        <!---Deactive Book --> 
+        <action name="deactiveBookAction" class="controller.BookAction" method="deactiveBook">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showAllListBook</param>
+            </result>
+            <result name ="fail" >fail.jsp</result>
+        </action>
+        
+        <!---Active Book --> 
+        <action name="activeBookAction" class="controller.BookAction" method="activeBook">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success" type="redirectAction">
+                <param name="actionName">showAllListBook</param>
+            </result>
+            <result name ="fail" >fail.jsp</result>
+        </action>
+        
+        <!-- Search List Book By Admin&User-->
+        <action name="searchBook" class="controller.BookAction" method="searchBook">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">BookList.jsp</result>
+            <result name = "fail">BookList.jsp</result>
+        </action>
+        
+        
+        
+        
+        
+        <!--====================== COMMENT ACTION=============================-->
+        <!--add comment then show Book detail, list comment-->
+        <action name="addComment" class="controller.BookAction" method = "addComment">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name="success">BookDetailUser.jsp
+                <!--   <param name = "actionName">redirectBookDetailUser</param>  -->
+            </result>
+            <result name ="fail" >BookDetailUser.jsp</result>
+        </action>
+        
+        
+        
+        
+        <!--===================COMPRESS FILE ACTION=========================-->
+        <action name = "compress" class = "util.FileCompress" method="compress">
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            <result name = "success">BackupSuccess.jsp</result>
+            <result name = "fail">fail.jsp</result>
+        </action>
+        
+        
+        
+        
+        <!--======================REDIRECT ACTION=============================-->
+        <action name = "redirectBackUp" class = "controller.Redirect" method="redirect">
+            <result name = "success">BackupCode.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectDashboard" class = "controller.Redirect" method="redirect">
+            <result name = "success">index.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+                
+        <action name = "redirectDashboardUser" class = "controller.Redirect" method="redirect">
+            <result name = "success">indexUser.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectAdminInfo" class = "controller.Redirect" method="redirect">
+            <result name = "success">AdminInfo.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectAdminChangePassword" class = "controller.Redirect" method="redirect">
+            <result name = "success">AdminChangePassword.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectUserChangePassword" class = "controller.Redirect" method="redirect">
+            <result name = "success">UserChangePassword.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectAddUser" class = "controller.Redirect" method="redirect">
+            <result name = "success">AddUser.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectAddBook" class = "controller.Redirect" method="redirect">
+            <result name = "success">AddBook.jsp</result>
+            <result name = "fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectAdminUpdate" class="controller.UserAction" method="getUserInfo">
+            <result name = "success">AdminUpdate.jsp</result>
+            <result name="fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectUserUpdate" class="controller.UserAction" method="getUserInfo">
+            <result name = "success">UserUpdate.jsp</result>
+            <result name="fail">404.jsp</result>
+        </action>
+
+        <action name = "redirectUserUpdateByAdmin" class="controller.UserAction" method="getUserInfo">
+            <result name = "success">UserUpdateByAdmin.jsp</result>
+            <result name="fail">404.jsp</result>
+        </action>
+
+        <action name = "redirectBookDetailAdmin" class="controller.BookAction" method="bookDetail">
+            <result name = "success">BookDetailAdmin.jsp</result>
+            <result name="fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectBookDetailUser" class="controller.BookAction" method="bookDetail">
+            <result name = "success">BookDetailUser.jsp</result>
+            <result name="fail">404.jsp</result>
+        </action>
+        
+        <action name = "redirectBookUpdateAdmin" class="controller.BookAction" method="bookDetail">
+            <result name = "success">BookUpdate.jsp</result>
+            <result name="fail">404.jsp</result>
+        </action>
+        
+        <!--End Redirect Action--> 
+        
+        <!--FILE UPLOAD ACTION TEST-->
+        
+        <action name = "upload" class = "util.FileUpload" method ="execute">
+            <result name = "success">success.jsp</result>
+            <result name = "error">fail.jsp</result>
+        </action>
+        
+        
+        
+        
+    </package>
+</struts>
